@@ -8,6 +8,7 @@ import br.com.alura.maurin.dao.ProdutosDao
 import br.com.alura.maurin.databinding.ActivityListaProdutosBinding
 import br.com.alura.maurin.ui.recyclerview.adapter.ListaProdutosAdapter
 
+// tela principal
 class ListaProdutosActivity : AppCompatActivity(R.layout.activity_lista_produtos) {
 
     private val binding by lazy {
