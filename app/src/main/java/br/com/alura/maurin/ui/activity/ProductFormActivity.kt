@@ -1,49 +1,62 @@
 package br.com.alura.maurin.ui.activity
 
 import android.os.Bundle
-import android.widget.Button
 import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
 import br.com.alura.maurin.R
 import br.com.alura.maurin.dao.ProdutosDao
+import br.com.alura.maurin.databinding.ActivityProductFormBinding
 import br.com.alura.maurin.model.Produto
 import java.math.BigDecimal
 
+
 class ProductFormActivity : AppCompatActivity(R.layout.activity_product_form) {
+
+    private lateinit var campoNome: EditText
+    private lateinit var campoDescricao: EditText
+    private lateinit var campoValor: EditText
+
+    private lateinit var binding: ActivityProductFormBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-//        val binding = ProductFormActivityBinding.inflate(layoutInflater)
+        binding = ActivityProductFormBinding.inflate(layoutInflater)
+        setContentView(binding.root)
         configuraBotaoSalvar()
+        configuraForm()
+    }
 
+    private fun configuraForm() {
+        campoNome = binding.activityProdutoFormNome
+        campoDescricao = binding.activityProdutoFormDescricao
+        campoValor = binding.activityProdutoFormValor
     }
 
     private fun configuraBotaoSalvar() {
-        val salvarButtom = findViewById<Button>(R.id.activity_produto_form_salvar_buttom)
-        val dao = ProdutosDao()
+        val salvarButtom = binding.activityProdutoFormSalvarButtom
         salvarButtom.setOnClickListener {
-            val (nome, descricao, valor) = criaProduto()
-
+            val produtoNovo = criaProduto()
         }
     }
 
-    private fun criaProduto(): Produto {
-        val campoNome = findViewById<EditText>(R.id.activity_produto_form_nome)
+    private fun criaProduto() {
         val nome = campoNome.text.toString()
-        val campoDescricao = findViewById<EditText>(R.id.activity_produto_form_descricao)
         val descricao = campoDescricao.text.toString()
-        val campoValor = findViewById<EditText>(R.id.activity_produto_form_valor)
         val valorEmTexto = campoValor.text.toString()
         val valor = if (valorEmTexto.isBlank()) {
             BigDecimal.ZERO
         } else {
             BigDecimal(valorEmTexto)
         }
-        return Produto(
+        val produto = Produto(
             nome = nome,
             descricao = descricao,
             valor = valor
         )
 
+        val dao = ProdutosDao()
+        dao.adiciona(produto)
+        finish()
     }
 }
+

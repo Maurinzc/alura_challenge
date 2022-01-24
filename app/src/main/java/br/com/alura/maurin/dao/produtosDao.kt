@@ -6,7 +6,6 @@ class ProdutosDao {
 
     fun adiciona(produto: Produto) {
         produtos.add(produto)
-
     }
 
     fun buscaTodos(): List<Produto> {
